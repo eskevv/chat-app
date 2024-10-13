@@ -137,20 +137,21 @@ func joinRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	fs := http.FileServer(http.Dir("./static")) // Assuming your CSS is in a "static" directory
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "index.html")
-		http.ServeFile(w, r, "index.css")
-})
+	})
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Fallback port for local testing
+	}
 
-  port := os.Getenv("PORT")
-  if port == "" {
-      port = "8080" // Fallback port for local testing
-  }
-
-  fmt.Println("Server started on port " + port)
-  err := http.ListenAndServe(":" + port, nil)
-  if err != nil {
-      log.Fatal("ListenAndServe error:", err)
-  }
+	fmt.Println("Server started on port " + port)
+	err := http.ListenAndServe(":"+port, nil)
+	if err != nil {
+		log.Fatal("ListenAndServe error:", err)
+	}
 }
