@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <title>Chat Room</title>
-  <link rel="stylesheet" href="/static/index.css">
+  <!-- <link rel="stylesheet" href="/static/index.css"> -->
 </head>
 
 <body>
@@ -28,7 +28,7 @@
 
       // Open WebSocket connection with room and username as query parameters
       
-      ws = new WebSocket("ws://localhost:8080/ws?room=" + room + "&username=" + username);
+      ws = new WebSocket("ws://cryptic-dusk-98325-1b70925e5241.herokuapp.com/ws?room=" + room + "&username=" + username);
 
       document.getElementById("chat-room").textContent = room
 
