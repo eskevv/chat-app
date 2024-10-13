@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/websocket"
 )
@@ -136,11 +137,16 @@ func joinRoom(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/wsk", joinRoom)
+  http.HandleFunc("/ws", joinRoom)
 
-	fmt.Println("Server started on :8080")
-	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
-		log.Fatal("ListenAndServe error:", err)
-	}
+  port := os.Getenv("PORT")
+  if port == "" {
+      port = "8080" // Fallback port for local testing
+  }
+
+  fmt.Println("Server started on port " + port)
+  err := http.ListenAndServe(":" + port, nil)
+  if err != nil {
+      log.Fatal("ListenAndServe error:", err)
+  }
 }
