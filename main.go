@@ -140,7 +140,7 @@ func main() {
 	fs := http.FileServer(http.Dir("./static")) // Assuming your CSS is in a "static" directory
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "index.html")
 	})
 
