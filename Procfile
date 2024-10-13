@@ -1,1 +1,1 @@
-web: chat-app
+web: go run main.go
