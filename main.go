@@ -140,7 +140,7 @@ func joinRoom(w http.ResponseWriter, r *http.Request) {
 func main() {
 	fs := http.FileServer(http.Dir("./static")) // Assuming your CSS is in a "static" directory
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	http.HandleFunc("/", joinRoom)
+	http.HandleFunc("/ws", joinRoom)
 
 	port := os.Getenv("PORT")
 	if port == "" {
