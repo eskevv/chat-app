@@ -117,6 +117,7 @@ var rooms = make(map[string]*Room)
 
 // HTTP handler to join a room
 func joinRoom(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "index.html")
 	roomName := r.URL.Query().Get("room")
 	username := r.URL.Query().Get("username") // Get the username from the query parameters
 	if roomName == "" || username == "" {
@@ -139,10 +140,7 @@ func joinRoom(w http.ResponseWriter, r *http.Request) {
 func main() {
 	fs := http.FileServer(http.Dir("./static")) // Assuming your CSS is in a "static" directory
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "index.html")
-	})
+	http.HandleFunc("/", joinRoom)
 
 	port := os.Getenv("PORT")
 	if port == "" {
