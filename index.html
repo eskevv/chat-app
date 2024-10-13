@@ -26,11 +26,8 @@
       const room = prompt("Enter room name:");
       if (!username || !room) return;
 
-      // Open WebSocket connection with room and username as query parameters
-
       // Update this line
       ws = new WebSocket(`wss://${window.location.host}/ws?room=${room}&username=${username}`);
-
 
       document.getElementById("chat-room").textContent = room
 
