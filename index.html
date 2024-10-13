@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Chat Room</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+  <h1>Chat Room</h1>
+  <h3 id="chat-room">NAME</h3>
+  <div id="app">
+    <div id="chat"></div>
+    <input id="messageInput" type="text" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    let ws;
+    let username;
+
+    function connect() {
+      // Prompt user for username and room name
+      username = prompt("Enter your username:");
+      const room = prompt("Enter room name:");
+      if (!username || !room) return;
+
+      // Open WebSocket connection with room and username as query parameters
+      ws = new WebSocket("ws://localhost:8080/ws?room=" + room + "&username=" + username);
+
+      document.getElementById("chat-room").textContent = room
+
+      // Handle incoming messages
+      ws.onmessage = function (event) {
+        const chat = document.getElementById("chat");
+        const message = document.createElement("p");
+        message.textContent = event.data;  // Display message (username prepended by server)
+        chat.appendChild(message);
+        chat.scrollTop = chat.scrollHeight; // Auto-scroll to the latest message
+      };
+
+      ws.onopen = function () {
+        console.log("Connected to the chat room.");
+      };
+
+      ws.onclose = function () {
+        console.log("Disconnected from the chat room.");
+      };
+
+      ws.onerror = function (error) {
+        console.error("WebSocket error:", error);
+      };
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("messageInput");
+      if (ws && input.value) {
+        ws.send(input.value);  // Send the message text
+        input.value = ''; // Clear input after sending
+      }
+    }
+
+    // Listen for "Enter" key to send message
+    document.getElementById("messageInput").addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        sendMessage(); // Trigger the sendMessage function
+      }
+    });
+
+    connect(); // Start the connection when the page loads
+  </script>
+</body>
+
+</html>
