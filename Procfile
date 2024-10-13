@@ -1,1 +1,2 @@
-web: go run main.go
+web: go build .
+./chat-app
