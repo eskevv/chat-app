@@ -27,7 +27,7 @@
       if (!username || !room) return;
 
       // Open WebSocket connection with room and username as query parameters
-      ws = new WebSocket("wss://" + window.location.host + "/ws?room=" + room + "&username=" + username);
+      ws = new WebSocket("wss://" + window.location.host + "/?room=" + room + "&username=" + username);
 
 
       document.getElementById("chat-room").textContent = room
