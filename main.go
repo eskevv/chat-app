@@ -117,13 +117,12 @@ var rooms = make(map[string]*Room)
 
 // HTTP handler to join a room
 func joinRoom(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "index.html")
 	roomName := r.URL.Query().Get("room")
 	username := r.URL.Query().Get("username") // Get the username from the query parameters
-	if roomName == "" || username == "" {
-		http.Error(w, "Room name and username are required", http.StatusBadRequest)
-		return
-	}
+	// if roomName == "" || username == "" {
+	// 	http.Error(w, "Room name and username are required", http.StatusBadRequest)
+	// 	return
+	// }
 
 	// If the room doesn't exist, create it
 	room, exists := rooms[roomName]
@@ -135,6 +134,7 @@ func joinRoom(w http.ResponseWriter, r *http.Request) {
 
 	// Serve the WebSocket connection with the username
 	serveWs(room, username, w, r)
+	http.ServeFile(w, r, "index.html")
 }
 
 func main() {
